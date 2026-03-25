@@ -35,6 +35,9 @@ importers:
       naive-ui:
         specifier: ^2.44.1
         version: 2.44.1(vue@3.5.30(typescript@5.9.3))
+      vkbeautify:
+        specifier: ^0.99.3
+        version: 0.99.3
       vue:
         specifier: ^3.5.13
         version: 3.5.30(typescript@5.9.3)
@@ -801,6 +804,9 @@ packages:
       yaml:
         optional: true
 
+  vkbeautify@0.99.3:
+    resolution: {integrity: sha512-2ozZEFfmVvQcHWoHLNuiKlUfDKlhh4KGsy54U0UrlLMR1SO+XKAIDqBxtBwHgNrekurlJwE8A9K6L49T78ZQ9Q==}
+
   vooks@0.2.12:
     resolution: {integrity: sha512-iox0I3RZzxtKlcgYaStQYKEzWWGAduMmq+jS7OrNdQo1FgGfPMubGL3uGHOU9n97NIvfFDBGnpSvkWyb/NSn/Q==}
     peerDependencies:
@@ -1502,6 +1508,8 @@ snapshots:
       tinyglobby: 0.2.15
     optionalDependencies:
       fsevents: 2.3.3
+
+  vkbeautify@0.99.3: {}
 
   vooks@0.2.12(vue@3.5.30(typescript@5.9.3)):
     dependencies:

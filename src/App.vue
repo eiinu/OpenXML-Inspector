@@ -123,36 +123,45 @@ const buildFileStructure = (zip: JSZip): FileSystemNode[] => {
     }
   });
 
-  // 处理目录
+  // 处理目录，过滤掉空目录
   Object.entries(directories).forEach(([dirPath, files]) => {
-    const parts = dirPath.split('/');
-    const dirName = parts.pop()!;
-    const parentPath = parts.join('/');
+    // 只有当目录包含文件时才添加
+    if (files.length > 0) {
+      const parts = dirPath.split('/');
+      const dirName = parts.pop()!;
+      const parentPath = parts.join('/');
 
-    const dirEntry = {
-      name: dirName,
-      path: dirPath,
-      type: 'directory' as const,
-      children: files
-    };
+      const dirEntry = {
+        name: dirName,
+        path: dirPath,
+        type: 'directory' as const,
+        children: files
+      };
 
-    if (parentPath) {
-      // 找到父目录并添加
-      let parent = structure.find(item => item.path === parentPath);
-      if (!parent) {
-        // 递归创建父目录
-        createParentDirectories(parentPath, structure, directories);
-        parent = structure.find(item => item.path === parentPath);
+      if (parentPath) {
+        // 找到父目录并添加
+        let parent = structure.find(item => item.path === parentPath);
+        if (!parent) {
+          // 递归创建父目录
+          createParentDirectories(parentPath, structure, directories);
+          parent = structure.find(item => item.path === parentPath);
+        }
+        if (parent && parent.type === 'directory' && parent.children) {
+          parent.children.push(dirEntry);
+        }
+      } else {
+        structure.push(dirEntry);
       }
-      if (parent && parent.type === 'directory' && parent.children) {
-        parent.children.push(dirEntry);
-      }
-    } else {
-      structure.push(dirEntry);
     }
   });
 
-  return structure;
+  // 过滤掉空的根目录
+  return structure.filter(node => {
+    if (node.type === 'directory') {
+      return node.children && node.children.length > 0;
+    }
+    return true;
+  });
 };
 
 const createParentDirectories = (dirPath: string, structure: any[], directories: any) => {
@@ -164,12 +173,16 @@ const createParentDirectories = (dirPath: string, structure: any[], directories:
     createParentDirectories(parentPath, structure, directories);
   }
 
-  structure.push({
-    name: dirName,
-    path: dirPath,
-    type: 'directory' as const,
-    children: directories[dirPath] || []
-  });
+  // 只有当目录包含文件时才添加
+  const children = directories[dirPath] || [];
+  if (children.length > 0) {
+    structure.push({
+      name: dirName,
+      path: dirPath,
+      type: 'directory' as const,
+      children
+    });
+  }
 };
 </script>
 

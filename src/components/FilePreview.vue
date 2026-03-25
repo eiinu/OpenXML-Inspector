@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, nextTick } from 'vue';
 import { EditorView, basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { html } from '@codemirror/lang-html';
 import { javascript } from '@codemirror/lang-javascript';
 import { xml } from '@codemirror/lang-xml';
+import vkbeautify from 'vkbeautify';
 
 const props = defineProps<{
   filePath: string | null;
@@ -24,11 +25,20 @@ const destroyEditor = () => {
 };
 
 // 创建编辑器实例
-const createEditor = (content: string) => {
+const createEditor = async (content: string) => {
+  // 确保 DOM 已经更新
+  await nextTick();
+  
   if (!editorContainer.value) return;
 
   // 销毁现有编辑器
   destroyEditor();
+
+  // 对 XML、VML 和 XML.rels 文件进行格式化
+  let formattedContent = content;
+  if (props.filePath?.endsWith('.xml') || props.filePath?.endsWith('.vml') || props.filePath?.endsWith('.xml.rels')) {
+    formattedContent = vkbeautify.xml(content);
+  }
 
   // 根据文件类型选择语言
   let extensions = [basicSetup];
@@ -41,7 +51,7 @@ const createEditor = (content: string) => {
   }
 
   const state = EditorState.create({
-    doc: content,
+    doc: formattedContent,
     extensions,
   });
 
@@ -52,13 +62,14 @@ const createEditor = (content: string) => {
 };
 
 const formatCode = () => {
-  if (!editorView.value || !props.fileContent) return;
+  if (!editorView.value) return;
   
-  let formattedContent = props.fileContent;
+  const currentContent = editorView.value.state.doc.toString();
+  let formattedContent = currentContent;
   
-  if (props.fileType === 'xml') {
-    // 简单的 XML 格式化
-    formattedContent = formatXML(props.fileContent);
+  if (props.filePath?.endsWith('.xml') || props.filePath?.endsWith('.vml') || props.filePath?.endsWith('.xml.rels')) {
+    // 使用 vkbeautify 库格式化 XML
+    formattedContent = vkbeautify.xml(currentContent);
   }
   
   // 更新编辑器内容
@@ -69,31 +80,6 @@ const formatCode = () => {
       insert: formattedContent
     }
   });
-};
-
-const formatXML = (xml: string) => {
-  let formatted = '';
-  let indent = 0;
-  let inTag = false;
-  
-  for (let i = 0; i < xml.length; i++) {
-    const char = xml[i];
-    
-    if (char === '<' && xml[i + 1] !== '/') {
-      formatted += '\n' + '  '.repeat(indent);
-      indent++;
-      inTag = true;
-    } else if (char === '>' && !inTag) {
-      indent--;
-      formatted += '\n' + '  '.repeat(indent);
-    } else if (char === '>' && inTag) {
-      inTag = false;
-    }
-    
-    formatted += char;
-  }
-  
-  return formatted.trim();
 };
 
 const copyContent = async () => {
@@ -110,8 +96,8 @@ const copyContent = async () => {
 
 // 监听文件内容变化
 watch(
-  () => props.fileContent,
-  (newContent) => {
+  () => [props.filePath, props.fileContent],
+  ([newFilePath, newContent]) => {
     if (newContent) {
       createEditor(newContent);
     } else {

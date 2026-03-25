@@ -41,7 +41,7 @@ const selectFile = (filePath: string) => {
   let type = 'text';
   if (filePath.endsWith('.xml') || filePath.endsWith('.vml') || filePath.endsWith('.xml.rels')) {
     type = 'xml';
-  } else if (filePath.endsWith('.png') || filePath.endsWith('.jpg') || filePath.endsWith('.jpeg') || filePath.endsWith('.gif')) {
+  } else if (filePath.endsWith('.png') || filePath.endsWith('.jpg') || filePath.endsWith('.jpeg') || filePath.endsWith('.gif') || filePath.endsWith('.svg')) {
     type = 'image';
   } else if (filePath.endsWith('.mp4') || filePath.endsWith('.avi') || filePath.endsWith('.mov')) {
     type = 'video';
@@ -53,7 +53,7 @@ const selectFile = (filePath: string) => {
 const getFileIcon = (fileName: string) => {
   if (fileName.endsWith('.xml') || fileName.endsWith('.vml') || fileName.endsWith('.xml.rels')) {
     return '📄';
-  } else if (fileName.endsWith('.png') || fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.gif')) {
+  } else if (fileName.endsWith('.png') || fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.gif') || fileName.endsWith('.svg')) {
     return '🖼️';
   } else if (fileName.endsWith('.mp4') || fileName.endsWith('.avi') || fileName.endsWith('.mov')) {
     return '🎬';
