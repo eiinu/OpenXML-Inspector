@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue';
 import JSZip from 'jszip';
 import FileTree from './components/FileTree.vue';
 import FilePreview from './components/FilePreview.vue';
+import { openXmlRules, type OpenXmlRule } from './data/openxmlRules';
 
 interface FileNode {
   name: string;
@@ -19,17 +20,6 @@ interface DirectoryNode {
 
 type FileSystemNode = DirectoryNode | FileNode;
 
-interface OpenXmlRule {
-  id: string;
-  title: string;
-  category: string;
-  path: string;
-  description: string;
-  tags: string[];
-  highlights: string[];
-  commonValues: Array<{ name: string; value: string; note: string }>;
-}
-
 const selectedFile = ref<string | null>(null);
 const fileContent = ref<string | null>(null);
 const fileType = ref<string | null>(null);
@@ -43,78 +33,6 @@ const queryKeyword = ref('');
 const selectedRule = ref<OpenXmlRule | null>(null);
 const activeWorkspaceTab = ref<'inspector' | 'rules'>('rules');
 
-const openXmlRules: OpenXmlRule[] = [
-  {
-    id: 'w-p',
-    title: '段落元素 (w:p)',
-    category: 'WordprocessingML',
-    path: '/word/document.xml',
-    description: '表示 Word 文档中的一个段落容器，可包含文字、书签、批注等内容。',
-    tags: ['word', 'paragraph', 'w:p', '段落'],
-    highlights: ['通常包含一个或多个 w:r（run）', '段落样式通过 w:pPr 控制', '可带编号、缩进、对齐等属性'],
-    commonValues: [
-      { name: 'w:jc/@w:val', value: 'left|center|right|both', note: '控制段落对齐方式' },
-      { name: 'w:spacing/@w:line', value: '240', note: '行距，单位通常为 twentieths of a point' },
-      { name: 'w:ind/@w:firstLine', value: '420', note: '首行缩进' }
-    ]
-  },
-  {
-    id: 'w-tbl',
-    title: '表格元素 (w:tbl)',
-    category: 'WordprocessingML',
-    path: '/word/document.xml',
-    description: '定义 Word 表格，包含网格、行、单元格及样式信息。',
-    tags: ['word', 'table', 'w:tbl', '单元格'],
-    highlights: ['表格属性位于 w:tblPr', '列宽网格由 w:tblGrid 表示', '单元格内容存放在 w:tc > w:p'],
-    commonValues: [
-      { name: 'w:tblW/@w:type', value: 'auto|dxa|pct', note: '表格宽度计算方式' },
-      { name: 'w:tblLayout/@w:type', value: 'autofit|fixed', note: '自适应或固定布局' },
-      { name: 'w:vAlign/@w:val', value: 'top|center|bottom', note: '单元格垂直对齐方式' }
-    ]
-  },
-  {
-    id: 'a-sp',
-    title: '图形形状 (a:sp)',
-    category: 'DrawingML',
-    path: '/ppt/slides/slide1.xml',
-    description: 'PPT 及绘图场景中的基本形状对象，包含几何、填充、文本框等定义。',
-    tags: ['ppt', 'shape', 'drawingml', 'a:sp'],
-    highlights: ['几何形状由 a:prstGeom 控制', '文本内容通常在 a:txBody 内', '样式可继承主题和版式'],
-    commonValues: [
-      { name: 'a:prstGeom/@prst', value: 'rect|roundRect|ellipse', note: '预设几何类型' },
-      { name: 'a:solidFill', value: 'schemeClr|srgbClr', note: '填充颜色来源' },
-      { name: 'a:ln/@w', value: '9525', note: '线宽（EMU）' }
-    ]
-  },
-  {
-    id: 'c-numFmt',
-    title: '数字格式 (c:numFmt)',
-    category: 'SpreadsheetML',
-    path: '/xl/charts/chart1.xml',
-    description: '定义图表或单元格数字显示格式，如百分比、日期、货币等。',
-    tags: ['excel', 'chart', 'format', 'c:numFmt'],
-    highlights: ['关联 formatCode 字符串', '可控制是否链接源格式', '常见于图表轴和数据标签'],
-    commonValues: [
-      { name: 'formatCode', value: '0.00%;[Red]-0.00%', note: '自定义正负数与颜色' },
-      { name: 'sourceLinked', value: '0|1', note: '是否继承源数据格式' },
-      { name: 'formatCode', value: 'yyyy-mm-dd', note: '日期展示格式' }
-    ]
-  },
-  {
-    id: 'rels',
-    title: '关系文件 (.rels)',
-    category: 'Packaging',
-    path: '/_rels/.rels',
-    description: 'Open Packaging Convention 的关系映射文件，连接包内部部件与外部资源。',
-    tags: ['opc', 'relationship', '.rels', 'TargetMode'],
-    highlights: ['每个关系含 Id、Type、Target', 'TargetMode=External 表示外部链接', '常用于图片、主题、样式的引用链路'],
-    commonValues: [
-      { name: 'Type', value: '.../officeDocument', note: '主文档入口关系类型' },
-      { name: 'TargetMode', value: 'Internal|External', note: '内部或外部资源' },
-      { name: 'Target', value: 'word/document.xml', note: '关系目标路径' }
-    ]
-  }
-];
 
 const hasFile = computed(() => fileStructure.value.length > 0);
 
