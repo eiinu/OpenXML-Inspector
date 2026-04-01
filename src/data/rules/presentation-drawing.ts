@@ -84,5 +84,103 @@ export const presentationDrawingRules: OpenXmlRule[] = [
       { name: 'a:bodyPr/@anchor', value: 't|ctr|b', note: '垂直对齐' },
       { name: 'a:pPr/@algn', value: 'l|ctr|r|just', note: '段落对齐' }
     ]
+  },
+  {
+    id: 'p-pic',
+    title: '图片形状 (p:pic)',
+    category: 'PresentationML',
+    path: '/ppt/slides/slide1.xml',
+    description: '幻灯片中的图片对象，包含非可视属性、变换和图像填充。',
+    tags: ['ppt', 'picture', 'p:pic', 'image'],
+    highlights: ['图片引用在 a:blip', '裁剪参数在 a:srcRect', '位置尺寸由 a:xfrm 控制'],
+    commonValues: [
+      { name: 'p:nvPicPr', value: 'cNvPr + cNvPicPr + nvPr', note: '非可视属性集合' },
+      { name: 'a:blip/@r:embed', value: 'rId3', note: '图片资源关系' },
+      { name: 'a:stretch/a:fillRect', value: 'present', note: '填充拉伸方式' }
+    ]
+  },
+  {
+    id: 'p-graphicFrame',
+    title: '图形框架 (p:graphicFrame)',
+    category: 'PresentationML',
+    path: '/ppt/slides/slide1.xml',
+    description: '承载图表、表格、SmartArt 等复合对象的框架容器。',
+    tags: ['ppt', 'chart', 'table', 'p:graphicFrame'],
+    highlights: ['具体对象在 a:graphicData URI 中识别', '图表通过关系引用 chartX.xml', '可设置名称和锁定属性'],
+    commonValues: [
+      { name: 'a:graphicData/@uri', value: '.../chart|.../table|.../diagram', note: '对象类型 URI' },
+      { name: 'cNvPr/@name', value: 'Chart 2', note: '对象名称' },
+      { name: 'xfrm/off+ext', value: 'EMU', note: '位置与尺寸' }
+    ]
+  },
+  {
+    id: 'p-notes',
+    title: '备注页 (p:notes)',
+    category: 'PresentationML',
+    path: '/ppt/notesSlides/notesSlide1.xml',
+    description: '每页幻灯片关联的演讲者备注内容。',
+    tags: ['ppt', 'notes', 'p:notes', 'speaker'],
+    highlights: ['通过 slide 的关系链接', '布局与正文类似使用形状树', '可被导出讲义使用'],
+    commonValues: [
+      { name: '关联关系类型', value: '.../notesSlide', note: '从 slideX.xml.rels 指向' },
+      { name: 'p:cSld', value: 'present', note: '备注页公共数据' },
+      { name: '文本容器', value: 'p:sp > p:txBody', note: '备注文本位置' }
+    ]
+  },
+  {
+    id: 'p-transition',
+    title: '切换动画 (p:transition)',
+    category: 'PresentationML',
+    path: '/ppt/slides/slide1.xml',
+    description: '定义幻灯片切换效果和速度。',
+    tags: ['ppt', 'transition', 'animation', 'p:transition'],
+    highlights: ['可设持续时长和触发方式', '支持方向参数', '可能带声音增强效果'],
+    commonValues: [
+      { name: '@spd', value: 'slow|med|fast', note: '切换速度' },
+      { name: '子元素', value: 'p:fade|p:push|p:wipe', note: '切换类型' },
+      { name: '@advClick', value: '0|1', note: '是否允许点击切换' }
+    ]
+  },
+  {
+    id: 'a-gradFill',
+    title: '渐变填充 (a:gradFill)',
+    category: 'DrawingML',
+    path: '/ppt/slides/slide1.xml',
+    description: '定义形状、文本或背景的渐变色填充。',
+    tags: ['drawingml', 'gradient', 'a:gradFill', 'fill'],
+    highlights: ['颜色停靠点在 gsLst', '支持线性和路径渐变', '可与主题色联动'],
+    commonValues: [
+      { name: 'a:gs/@pos', value: '0..100000', note: '渐变停靠点位置' },
+      { name: 'a:lin/@ang', value: '5400000', note: '渐变角度（1/60000 度）' },
+      { name: 'a:path/@path', value: 'shape|circle|rect', note: '路径渐变模式' }
+    ]
+  },
+  {
+    id: 'a-effectLst',
+    title: '效果列表 (a:effectLst)',
+    category: 'DrawingML',
+    path: '/ppt/slides/slide1.xml',
+    description: '定义阴影、发光、柔化边缘等视觉效果。',
+    tags: ['drawingml', 'effects', 'a:effectLst', 'shadow'],
+    highlights: ['可叠加多个效果', '常出现在样式和直接格式中', '渲染结果依赖客户端实现'],
+    commonValues: [
+      { name: 'a:outerShdw', value: 'blurRad|dist|dir', note: '外阴影参数' },
+      { name: 'a:glow/@rad', value: '38100', note: '发光半径（EMU）' },
+      { name: 'a:softEdge/@rad', value: '25400', note: '柔化边缘半径' }
+    ]
+  },
+  {
+    id: 'a-videoFile',
+    title: '视频文件引用 (a:videoFile)',
+    category: 'DrawingML',
+    path: '/ppt/slides/slide1.xml',
+    description: '在媒体对象中引用视频资源文件。',
+    tags: ['drawingml', 'video', 'a:videoFile', 'media'],
+    highlights: ['通常与 p:pic 或媒体节点搭配', '可嵌入或外链', '播放设置在扩展属性中'],
+    commonValues: [
+      { name: 'r:link', value: 'rId12', note: '媒体关系 ID' },
+      { name: 'contentType', value: 'video/mp4', note: '媒体 MIME 类型' },
+      { name: '关联部件', value: '/ppt/media/video1.mp4', note: '媒体文件路径' }
+    ]
   }
 ];

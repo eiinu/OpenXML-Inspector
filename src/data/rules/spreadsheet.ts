@@ -98,5 +98,117 @@ export const spreadsheetRules: OpenXmlRule[] = [
       { name: 'sourceLinked', value: '0|1', note: '是否继承源数据格式' },
       { name: 'formatCode', value: 'yyyy-mm-dd', note: '日期展示格式' }
     ]
+  },
+  {
+    id: 'x-autoFilter',
+    title: '自动筛选 (autoFilter)',
+    category: 'SpreadsheetML',
+    path: '/xl/worksheets/sheet1.xml',
+    description: '定义工作表筛选区域与列筛选条件。',
+    tags: ['excel', 'filter', 'autoFilter', 'worksheet'],
+    highlights: ['ref 定义筛选范围', '每列条件在 filterColumn', '支持动态过滤和自定义条件'],
+    commonValues: [
+      { name: '@ref', value: 'A1:H200', note: '筛选作用范围' },
+      { name: 'filterColumn/@colId', value: '0..N', note: '列索引（从0开始）' },
+      { name: 'customFilters', value: 'operator+val', note: '自定义筛选条件' }
+    ]
+  },
+  {
+    id: 'x-conditionalFormatting',
+    title: '条件格式 (conditionalFormatting)',
+    category: 'SpreadsheetML',
+    path: '/xl/worksheets/sheet1.xml',
+    description: '定义满足条件时的样式高亮规则。',
+    tags: ['excel', 'conditional formatting', 'cfRule', 'dxf'],
+    highlights: ['支持公式与阈值规则', '样式引用 dxf', '优先级由 priority 控制'],
+    commonValues: [
+      { name: 'conditionalFormatting/@sqref', value: 'A2:A100', note: '应用范围' },
+      { name: 'cfRule/@type', value: 'cellIs|expression|colorScale|dataBar|iconSet', note: '规则类型' },
+      { name: 'cfRule/@priority', value: '1..N', note: '规则优先级' }
+    ]
+  },
+  {
+    id: 'x-table',
+    title: '结构化表格 (table)',
+    category: 'SpreadsheetML',
+    path: '/xl/tables/table1.xml',
+    description: 'Excel 表对象定义，包含列名、样式和筛选等信息。',
+    tags: ['excel', 'table', 'structured reference', 'tableStyleInfo'],
+    highlights: ['与 worksheet 中 tablePart 关联', '可启用总计行', '支持结构化引用公式'],
+    commonValues: [
+      { name: '@ref', value: 'A1:D200', note: '表格区域' },
+      { name: '@displayName', value: 'SalesTable', note: '表格显示名' },
+      { name: 'tableStyleInfo/@name', value: 'TableStyleMedium2', note: '表样式' }
+    ]
+  },
+  {
+    id: 'x-sheetView',
+    title: '工作表视图 (sheetView)',
+    category: 'SpreadsheetML',
+    path: '/xl/worksheets/sheet1.xml',
+    description: '保存冻结窗格、网格线显示、缩放等界面视图设置。',
+    tags: ['excel', 'view', 'sheetView', 'pane'],
+    highlights: ['多视图通过 workbookViewId 区分', '冻结窗格在 pane', '可记忆选中区域'],
+    commonValues: [
+      { name: '@showGridLines', value: '0|1', note: '是否显示网格线' },
+      { name: 'pane/@state', value: 'frozen|split|frozenSplit', note: '窗格状态' },
+      { name: 'selection/@sqref', value: 'A1', note: '当前选区' }
+    ]
+  },
+  {
+    id: 'x-calcPr',
+    title: '计算属性 (calcPr)',
+    category: 'SpreadsheetML',
+    path: '/xl/workbook.xml',
+    description: '工作簿级计算引擎设置，如重算模式和迭代计算。',
+    tags: ['excel', 'calculation', 'calcPr', 'workbook'],
+    highlights: ['控制自动/手动计算', '可开启迭代收敛', 'calcId 反映引擎版本'],
+    commonValues: [
+      { name: '@calcMode', value: 'auto|manual|autoNoTable', note: '计算模式' },
+      { name: '@iterate', value: '0|1', note: '是否启用迭代计算' },
+      { name: '@fullCalcOnLoad', value: '0|1', note: '打开时全量重算' }
+    ]
+  },
+  {
+    id: 'x-sharedStringItem',
+    title: '共享字符串项 (si)',
+    category: 'SpreadsheetML',
+    path: '/xl/sharedStrings.xml',
+    description: '共享字符串表的单条记录，单元格可通过索引重复引用。',
+    tags: ['excel', 'shared strings', 'si', 'sst'],
+    highlights: ['减少重复字符串体积', '可包含富文本 run', '索引来自 c/v 值'],
+    commonValues: [
+      { name: 'sst/@count', value: '总字符串数量', note: '含重复计数' },
+      { name: 'sst/@uniqueCount', value: '去重数量', note: '唯一字符串计数' },
+      { name: 'si/r', value: 'rich text run', note: '富文本片段' }
+    ]
+  },
+  {
+    id: 'x-pivotTableDefinition',
+    title: '数据透视表定义 (pivotTableDefinition)',
+    category: 'SpreadsheetML',
+    path: '/xl/pivotTables/pivotTable1.xml',
+    description: '定义数据透视表布局、字段、过滤和格式。',
+    tags: ['excel', 'pivot table', 'pivotTableDefinition', 'cache'],
+    highlights: ['依赖 pivotCacheDefinition', '行列字段分别配置', '可设置显示总计与重复标签'],
+    commonValues: [
+      { name: '@cacheId', value: '1|2|3', note: '缓存定义 ID' },
+      { name: '@dataOnRows', value: '0|1', note: '值区域是否按行显示' },
+      { name: 'location/@ref', value: 'A3:H20', note: '透视表输出区域' }
+    ]
+  },
+  {
+    id: 'x-worksheetProtection',
+    title: '工作表保护 (sheetProtection)',
+    category: 'SpreadsheetML',
+    path: '/xl/worksheets/sheet1.xml',
+    description: '控制工作表可编辑能力，可配合密码哈希保护。',
+    tags: ['excel', 'protection', 'sheetProtection', 'lock'],
+    highlights: ['允许细粒度权限控制', '可禁用插入行/列等操作', '密码字段为哈希值'],
+    commonValues: [
+      { name: '@sheet', value: '0|1', note: '是否启用保护' },
+      { name: '@password', value: 'ABCD', note: '旧式哈希密码' },
+      { name: '@formatCells', value: '0|1', note: '是否允许设置单元格格式' }
+    ]
   }
 ];

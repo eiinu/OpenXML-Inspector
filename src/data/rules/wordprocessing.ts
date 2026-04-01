@@ -112,5 +112,117 @@ export const wordprocessingRules: OpenXmlRule[] = [
       { name: 'w:dirty', value: 'true|false', note: '是否需更新域值' },
       { name: 'w:fldLock', value: 'true|false', note: '是否锁定域更新' }
     ]
+  },
+  {
+    id: 'w-bookmarkStart',
+    title: '书签开始 (w:bookmarkStart)',
+    category: 'WordprocessingML',
+    path: '/word/document.xml',
+    description: '定义书签范围起点，需与 bookmarkEnd 的 id 成对出现。',
+    tags: ['word', 'bookmark', 'w:bookmarkStart', 'anchor'],
+    highlights: ['常用于目录跳转', '名称在 w:name', '范围跨段落时也可成立'],
+    commonValues: [
+      { name: 'w:id', value: '0|1|2...', note: '书签唯一编号' },
+      { name: 'w:name', value: '_Toc123456789', note: '书签名' },
+      { name: '对应结束标签', value: 'w:bookmarkEnd', note: '必须同 id 配对' }
+    ]
+  },
+  {
+    id: 'w-commentRangeStart',
+    title: '批注范围开始 (w:commentRangeStart)',
+    category: 'WordprocessingML',
+    path: '/word/document.xml',
+    description: '标记批注作用文本的起点，与 commentRangeEnd 及 commentReference 配套。',
+    tags: ['word', 'comment', 'review', 'w:commentRangeStart'],
+    highlights: ['批注内容在 comments.xml', '范围可以跨多个 run', 'id 必须一致'],
+    commonValues: [
+      { name: 'w:id', value: '0|1|2...', note: '批注 ID' },
+      { name: '关联部件', value: '/word/comments.xml', note: '批注正文存储位置' },
+      { name: '引用标记', value: 'w:commentReference', note: '显示批注锚点' }
+    ]
+  },
+  {
+    id: 'w-footnoteReference',
+    title: '脚注引用 (w:footnoteReference)',
+    category: 'WordprocessingML',
+    path: '/word/document.xml',
+    description: '正文中的脚注引用标记，指向 footnotes.xml 中具体脚注。',
+    tags: ['word', 'footnote', 'w:footnoteReference', 'reference'],
+    highlights: ['脚注正文在单独部件', 'id=0/1 常为保留值', '通常位于 w:r 内'],
+    commonValues: [
+      { name: 'w:id', value: '2+', note: '脚注编号' },
+      { name: '关联部件', value: '/word/footnotes.xml', note: '脚注内容' },
+      { name: 'endnote 对应标签', value: 'w:endnoteReference', note: '尾注引用' }
+    ]
+  },
+  {
+    id: 'w-br',
+    title: '换行/分页符 (w:br)',
+    category: 'WordprocessingML',
+    path: '/word/document.xml',
+    description: '在 run 内插入换行符、分页符或分栏符。',
+    tags: ['word', 'break', 'w:br', 'page break'],
+    highlights: ['常见于手动换行 Shift+Enter', '分页符可强制新页', '列分隔适用于分栏布局'],
+    commonValues: [
+      { name: 'w:type', value: 'textWrapping|page|column', note: '换行类型' },
+      { name: 'w:clear', value: 'none|left|right|all', note: '浮动对象清除方式' },
+      { name: '常见位置', value: 'w:r 内', note: '运行级元素' }
+    ]
+  },
+  {
+    id: 'w-tab',
+    title: '制表符 (w:tab)',
+    category: 'WordprocessingML',
+    path: '/word/document.xml',
+    description: '插入一个制表位跳转，结合段落 tabStops 控制位置。',
+    tags: ['word', 'tab', 'w:tab', 'alignment'],
+    highlights: ['仅表示一个 tab 字符', '定位规则在 w:tabs 内定义', '常见于目录和封面排版'],
+    commonValues: [
+      { name: 'w:tabs/w:tab/@w:val', value: 'left|center|right|decimal', note: '制表位类型' },
+      { name: 'w:tabs/w:tab/@w:pos', value: '720|1440|2160', note: '制表位位置' },
+      { name: 'w:leader', value: 'dot|hyphen|underscore', note: '前导符样式' }
+    ]
+  },
+  {
+    id: 'w-style',
+    title: '样式定义 (w:style)',
+    category: 'WordprocessingML',
+    path: '/word/styles.xml',
+    description: '定义段落、字符、表格、编号等样式模板。',
+    tags: ['word', 'style', 'w:style', 'styles.xml'],
+    highlights: ['样式可继承 basedOn', '可设置 next 样式', '文档默认样式也在此定义'],
+    commonValues: [
+      { name: 'w:type', value: 'paragraph|character|table|numbering', note: '样式类型' },
+      { name: 'w:styleId', value: 'Heading1|Normal', note: '样式 ID' },
+      { name: 'w:qFormat', value: 'present', note: '是否显示在快速样式库' }
+    ]
+  },
+  {
+    id: 'w-lvl',
+    title: '编号级别 (w:lvl)',
+    category: 'WordprocessingML',
+    path: '/word/numbering.xml',
+    description: '定义多级列表每一级的编号格式、文本和缩进。',
+    tags: ['word', 'numbering', 'w:lvl', 'list level'],
+    highlights: ['属于 abstractNum', '每级可定义不同 numFmt', 'lvlText 可引用上级编号'],
+    commonValues: [
+      { name: 'w:ilvl', value: '0..8', note: '列表层级' },
+      { name: 'w:numFmt/@w:val', value: 'decimal|bullet|lowerLetter', note: '编号格式' },
+      { name: 'w:start/@w:val', value: '1', note: '起始编号' }
+    ]
+  },
+  {
+    id: 'w-pict',
+    title: '兼容图形容器 (w:pict)',
+    category: 'WordprocessingML',
+    path: '/word/document.xml',
+    description: '旧版 VML 图形容器，用于兼容早期 Word 文档对象。',
+    tags: ['word', 'vml', 'w:pict', 'legacy'],
+    highlights: ['现代图形更推荐 DrawingML', '常包含 v:shape', '在旧模板中较常见'],
+    commonValues: [
+      { name: '子元素', value: 'v:shape|v:imagedata', note: 'VML 图元' },
+      { name: '关系引用', value: 'r:id', note: '图片资源关系' },
+      { name: '兼容性', value: 'legacy only', note: '面向旧格式兼容' }
+    ]
   }
 ];
