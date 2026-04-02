@@ -12,7 +12,17 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:jc/@w:val', value: 'left|center|right|both', note: '控制段落对齐方式' },
       { name: 'w:spacing/@w:line', value: '240', note: '行距，单位通常为 twentieths of a point' },
-      { name: 'w:ind/@w:firstLine', value: '420', note: '首行缩进' }
+      { name: 'w:ind/@w:firstLine', value: '420', note: '首行缩进' },
+      { name: 'w:spacing/@w:before', value: '0|120|240', note: '段前间距' },
+      { name: 'w:spacing/@w:after', value: '0|120|240', note: '段后间距' },
+      { name: 'w:ind/@w:left', value: '0|420|720', note: '左缩进' },
+      { name: 'w:ind/@w:right', value: '0|420|720', note: '右缩进' },
+      { name: 'w:outlineLvl/@w:val', value: '0..8', note: '大纲级别（标题层级）' },
+      { name: 'w:keepNext', value: 'on|off', note: '与下一段同页' },
+      { name: 'w:keepLines', value: 'on|off', note: '段内行不分页' },
+      { name: 'w:pageBreakBefore', value: 'on|off', note: '段前分页' },
+      { name: 'w:widowControl', value: 'on|off', note: '孤行/寡行控制' },
+      { name: 'w:numPr/w:numId/@w:val', value: '1|2|3', note: '关联编号定义（项目符号/列表）' }
     ]
   },
   {
@@ -26,7 +36,17 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:b', value: 'on|off', note: '粗体开关' },
       { name: 'w:i', value: 'on|off', note: '斜体开关' },
-      { name: 'w:sz/@w:val', value: '21|24|28', note: '字号（半磅）' }
+      { name: 'w:sz/@w:val', value: '21|24|28', note: '字号（半磅）' },
+      { name: 'w:u/@w:val', value: 'single|double|none', note: '下划线样式' },
+      { name: 'w:color/@w:val', value: 'auto|000000|4472C4', note: '文字颜色' },
+      { name: 'w:highlight/@w:val', value: 'yellow|green|none', note: '文字高亮' },
+      { name: 'w:rFonts/@w:ascii', value: 'Calibri|宋体|Times New Roman', note: '西文字体' },
+      { name: 'w:rFonts/@w:eastAsia', value: '宋体|等线|微软雅黑', note: '东亚字体' },
+      { name: 'w:vertAlign/@w:val', value: 'superscript|subscript|baseline', note: '上标/下标' },
+      { name: 'w:strike', value: 'on|off', note: '删除线' },
+      { name: 'w:caps', value: 'on|off', note: '全大写显示' },
+      { name: 'w:vanish', value: 'on|off', note: '隐藏文字' },
+      { name: 'w:lang/@w:val', value: 'en-US|zh-CN|ja-JP', note: '运行语言' }
     ]
   },
   {
@@ -40,7 +60,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:tblW/@w:type', value: 'auto|dxa|pct', note: '表格宽度计算方式' },
       { name: 'w:tblLayout/@w:type', value: 'autofit|fixed', note: '自适应或固定布局' },
-      { name: 'w:vAlign/@w:val', value: 'top|center|bottom', note: '单元格垂直对齐方式' }
+      { name: 'w:vAlign/@w:val', value: 'top|center|bottom', note: '单元格垂直对齐方式' },
+      { name: 'w:tblLook/@w:val', value: '04A0|0000', note: '表格样式外观标志位' },
+      { name: 'w:tblStyle/@w:val', value: 'TableGrid|LightShading', note: '表格样式 ID' }
     ]
   },
   {
@@ -54,7 +76,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'r:id', value: 'rId5', note: '关系 ID，对应 document.xml.rels' },
       { name: 'w:anchor', value: 'Heading1', note: '跳转到文档内书签' },
-      { name: 'w:history', value: '1', note: '链接是否记录访问历史' }
+      { name: 'w:history', value: '1', note: '链接是否记录访问历史' },
+      { name: 'w:tooltip', value: '查看详情', note: '鼠标悬停提示文字' },
+      { name: 'w:tgtFrame', value: '_blank|_self', note: '目标窗口/框架（兼容场景）' }
     ]
   },
   {
@@ -68,7 +92,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:alias/@w:val', value: '客户名称', note: '控件显示名称' },
       { name: 'w:tag/@w:val', value: 'customer_name', note: '程序识别标签' },
-      { name: 'w:lock/@w:val', value: 'sdtLocked|contentLocked', note: '锁定策略' }
+      { name: 'w:lock/@w:val', value: 'sdtLocked|contentLocked', note: '锁定策略' },
+      { name: 'w:id/@w:val', value: '123456789', note: '内容控件实例 ID' },
+      { name: 'w:dataBinding/@w:xpath', value: '/ns0:root/ns0:name', note: '绑定自定义 XML 的 XPath' }
     ]
   },
   {
@@ -82,7 +108,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:numId/@w:val', value: '1|2|3', note: '编号实例 ID' },
       { name: 'w:ilvl/@w:val', value: '0|1|2', note: '多级列表层级' },
-      { name: 'w:lvlText/@w:val', value: '%1.%2.', note: '级别编号文本模板' }
+      { name: 'w:lvlText/@w:val', value: '%1.%2.', note: '级别编号文本模板' },
+      { name: 'w:numFmt/@w:val', value: 'decimal|bullet|lowerRoman', note: '编号格式' },
+      { name: 'w:start/@w:val', value: '1', note: '当前级别起始编号' }
     ]
   },
   {
@@ -96,7 +124,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:pgSz/@w:orient', value: 'portrait|landscape', note: '页面方向' },
       { name: 'w:pgMar/@w:top', value: '1440', note: '上边距（1英寸）' },
-      { name: 'w:titlePg', value: 'present', note: '首页不同页眉页脚' }
+      { name: 'w:titlePg', value: 'present', note: '首页不同页眉页脚' },
+      { name: 'w:pgNumType/@w:start', value: '1|5|10', note: '页码起始值' },
+      { name: 'w:cols/@w:num', value: '1|2|3', note: '页面分栏数量' }
     ]
   },
   {
@@ -110,7 +140,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:instr', value: 'PAGE \\* MERGEFORMAT', note: '页码域示例' },
       { name: 'w:dirty', value: 'true|false', note: '是否需更新域值' },
-      { name: 'w:fldLock', value: 'true|false', note: '是否锁定域更新' }
+      { name: 'w:fldLock', value: 'true|false', note: '是否锁定域更新' },
+      { name: '常见指令', value: 'HYPERLINK|DATE|MERGEFIELD', note: '常用域类型关键字' },
+      { name: '结果文本位置', value: 'w:fldSimple > w:r > w:t', note: '域显示内容所在层级' }
     ]
   },
   {
@@ -124,7 +156,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:id', value: '0|1|2...', note: '书签唯一编号' },
       { name: 'w:name', value: '_Toc123456789', note: '书签名' },
-      { name: '对应结束标签', value: 'w:bookmarkEnd', note: '必须同 id 配对' }
+      { name: '对应结束标签', value: 'w:bookmarkEnd', note: '必须同 id 配对' },
+      { name: '隐藏书签前缀', value: '_Toc|_Ref', note: 'Word 自动生成书签常见前缀' },
+      { name: '可跳转目标', value: 'w:hyperlink/@w:anchor', note: '内部链接通常引用此名称' }
     ]
   },
   {
@@ -138,7 +172,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:id', value: '0|1|2...', note: '批注 ID' },
       { name: '关联部件', value: '/word/comments.xml', note: '批注正文存储位置' },
-      { name: '引用标记', value: 'w:commentReference', note: '显示批注锚点' }
+      { name: '引用标记', value: 'w:commentReference', note: '显示批注锚点' },
+      { name: '范围结束标签', value: 'w:commentRangeEnd', note: '需与起始 id 一致' },
+      { name: '批注作者信息', value: 'comments.xml/@w:author', note: '作者元数据位置' }
     ]
   },
   {
@@ -152,7 +188,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:id', value: '2+', note: '脚注编号' },
       { name: '关联部件', value: '/word/footnotes.xml', note: '脚注内容' },
-      { name: 'endnote 对应标签', value: 'w:endnoteReference', note: '尾注引用' }
+      { name: 'endnote 对应标签', value: 'w:endnoteReference', note: '尾注引用' },
+      { name: '保留值', value: '0|-1', note: '分隔符/续注分隔符等保留脚注 ID' },
+      { name: '正文位置', value: 'w:r 内', note: '通常作为运行级引用符号' }
     ]
   },
   {
@@ -166,7 +204,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:type', value: 'textWrapping|page|column', note: '换行类型' },
       { name: 'w:clear', value: 'none|left|right|all', note: '浮动对象清除方式' },
-      { name: '常见位置', value: 'w:r 内', note: '运行级元素' }
+      { name: '常见位置', value: 'w:r 内', note: '运行级元素' },
+      { name: '常见用途', value: 'Shift+Enter|分页符', note: '手动换行或强制分页' },
+      { name: '与段落分页差异', value: 'w:br 是字符级，w:pageBreakBefore 是段落级', note: '两者作用层级不同' }
     ]
   },
   {
@@ -180,7 +220,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:tabs/w:tab/@w:val', value: 'left|center|right|decimal', note: '制表位类型' },
       { name: 'w:tabs/w:tab/@w:pos', value: '720|1440|2160', note: '制表位位置' },
-      { name: 'w:leader', value: 'dot|hyphen|underscore', note: '前导符样式' }
+      { name: 'w:leader', value: 'dot|hyphen|underscore', note: '前导符样式' },
+      { name: 'w:tabs/w:tab/@w:leader', value: 'none|dot|middleDot', note: '制表位前导符' },
+      { name: '生效范围', value: '段落级 w:pPr/w:tabs', note: 'tab 停靠点定义位置' }
     ]
   },
   {
@@ -194,7 +236,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:type', value: 'paragraph|character|table|numbering', note: '样式类型' },
       { name: 'w:styleId', value: 'Heading1|Normal', note: '样式 ID' },
-      { name: 'w:qFormat', value: 'present', note: '是否显示在快速样式库' }
+      { name: 'w:qFormat', value: 'present', note: '是否显示在快速样式库' },
+      { name: 'w:basedOn/@w:val', value: 'Normal|BodyText', note: '继承基础样式' },
+      { name: 'w:next/@w:val', value: 'Normal|BodyText', note: '按 Enter 后切换到的样式' }
     ]
   },
   {
@@ -208,7 +252,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:ilvl', value: '0..8', note: '列表层级' },
       { name: 'w:numFmt/@w:val', value: 'decimal|bullet|lowerLetter', note: '编号格式' },
-      { name: 'w:start/@w:val', value: '1', note: '起始编号' }
+      { name: 'w:start/@w:val', value: '1', note: '起始编号' },
+      { name: 'w:lvlJc/@w:val', value: 'left|center|right', note: '编号文本对齐' },
+      { name: 'w:pPr/w:ind/@w:left', value: '360|720|1080', note: '该级别段落缩进' }
     ]
   },
   {
@@ -222,7 +268,9 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: '子元素', value: 'v:shape|v:imagedata', note: 'VML 图元' },
       { name: '关系引用', value: 'r:id', note: '图片资源关系' },
-      { name: '兼容性', value: 'legacy only', note: '面向旧格式兼容' }
+      { name: '兼容性', value: 'legacy only', note: '面向旧格式兼容' },
+      { name: '常见宿主', value: 'w:r > w:pict', note: '通常位于运行级' },
+      { name: '替代方案', value: 'w:drawing', note: '现代文档建议使用 DrawingML' }
     ]
   }
 ];
