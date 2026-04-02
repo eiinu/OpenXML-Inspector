@@ -12,7 +12,17 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:jc/@w:val', value: 'left|center|right|both', note: '控制段落对齐方式' },
       { name: 'w:spacing/@w:line', value: '240', note: '行距，单位通常为 twentieths of a point' },
-      { name: 'w:ind/@w:firstLine', value: '420', note: '首行缩进' }
+      { name: 'w:ind/@w:firstLine', value: '420', note: '首行缩进' },
+      { name: 'w:spacing/@w:before', value: '0|120|240', note: '段前间距' },
+      { name: 'w:spacing/@w:after', value: '0|120|240', note: '段后间距' },
+      { name: 'w:ind/@w:left', value: '0|420|720', note: '左缩进' },
+      { name: 'w:ind/@w:right', value: '0|420|720', note: '右缩进' },
+      { name: 'w:outlineLvl/@w:val', value: '0..8', note: '大纲级别（标题层级）' },
+      { name: 'w:keepNext', value: 'on|off', note: '与下一段同页' },
+      { name: 'w:keepLines', value: 'on|off', note: '段内行不分页' },
+      { name: 'w:pageBreakBefore', value: 'on|off', note: '段前分页' },
+      { name: 'w:widowControl', value: 'on|off', note: '孤行/寡行控制' },
+      { name: 'w:numPr/w:numId/@w:val', value: '1|2|3', note: '关联编号定义（项目符号/列表）' }
     ]
   },
   {
@@ -26,7 +36,17 @@ export const wordprocessingRules: OpenXmlRule[] = [
     commonValues: [
       { name: 'w:b', value: 'on|off', note: '粗体开关' },
       { name: 'w:i', value: 'on|off', note: '斜体开关' },
-      { name: 'w:sz/@w:val', value: '21|24|28', note: '字号（半磅）' }
+      { name: 'w:sz/@w:val', value: '21|24|28', note: '字号（半磅）' },
+      { name: 'w:u/@w:val', value: 'single|double|none', note: '下划线样式' },
+      { name: 'w:color/@w:val', value: 'auto|000000|4472C4', note: '文字颜色' },
+      { name: 'w:highlight/@w:val', value: 'yellow|green|none', note: '文字高亮' },
+      { name: 'w:rFonts/@w:ascii', value: 'Calibri|宋体|Times New Roman', note: '西文字体' },
+      { name: 'w:rFonts/@w:eastAsia', value: '宋体|等线|微软雅黑', note: '东亚字体' },
+      { name: 'w:vertAlign/@w:val', value: 'superscript|subscript|baseline', note: '上标/下标' },
+      { name: 'w:strike', value: 'on|off', note: '删除线' },
+      { name: 'w:caps', value: 'on|off', note: '全大写显示' },
+      { name: 'w:vanish', value: 'on|off', note: '隐藏文字' },
+      { name: 'w:lang/@w:val', value: 'en-US|zh-CN|ja-JP', note: '运行语言' }
     ]
   },
   {
